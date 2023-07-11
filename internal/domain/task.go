@@ -1,15 +1,9 @@
 package domain
 
-type Status string
-
-const (
-	completed    Status = "completed"
-	notCompleted Status = "notCompleted"
-)
-
 type Task struct {
-	id          string
-	name        string
-	description string
-	status      Status
+	Id          string
+	Name        string
+	Description string
+	Status      int
+	TimeStump   int64
 }
