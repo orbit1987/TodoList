@@ -26,15 +26,23 @@ func (t *TaskService) CreateTask(name string, description string, status int) (i
 	return t.repository.TodoTask.CreateTask(newTask)
 }
 
-func (t *TaskService) UpdateTask(taskId string, name string, description string, status int) (id string, err error) {
-	task, err := t.repository.TodoTask.GetTaskById(taskId)
-	if err != nil {
-		return "", err
+func (t *TaskService) UpdateTask(taskId string, updateData map[string]interface{}) (id string, err error) {
+	task, error := t.repository.TodoTask.GetTaskById(taskId)
+	if error != nil {
+		return "", error
 	}
 
-	task.Name = name
-	task.Description = description
-	task.Status = status
+	if name, ok := updateData["name"].(string); ok {
+		task.Name = name
+	}
+
+	if description, ok := updateData["description"].(string); ok {
+		task.Description = description
+	}
+
+	if status, ok := updateData["status"].(float64); ok {
+		task.Status = int(status)
+	}
 
 	return task.Id, nil
 }

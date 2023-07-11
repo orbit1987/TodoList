@@ -24,10 +24,10 @@ func (handler *Handler) InitRouter() http.Handler {
 	router := echo.New()
 	api := router.Group(getRootPath(), serverHeader)
 	api.POST("/createTask", handler.createTask)
-	api.PUT("/updateTask", handler.updateTask)
+	api.PUT("/updateTask/:id", handler.updateTask)
 	api.DELETE("/deleteTask/:id", handler.deleteTask)
-	api.GET("/tasksList", handler.taskList)
 	api.GET("/getTaskItem/:id", handler.getTaskItem)
+	api.GET("/tasksList", handler.taskList)
 
 	return router
 }

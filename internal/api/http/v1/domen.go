@@ -1,6 +1,9 @@
-package domain
+package handler
 
-type Status string
+import (
+	"fmt"
+	"github.com/labstack/echo/v4"
+)
 
 type NewTask struct {
 	Name        string `json:"name"`
@@ -19,7 +22,7 @@ type TaskId struct {
 	Id string `json:"Id"`
 }
 
-type FullTask struct {
+type ResponseFullTask struct {
 	Id          string `json:"Id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
@@ -27,8 +30,12 @@ type FullTask struct {
 	TimeStump   int64  `json:"timeStump"`
 }
 
-type AllTasks struct {
-	AllTasks []FullTask `json:"allTasks"`
+type ResponseAllTasks struct {
+	AllTasks []ResponseFullTask `json:"tasks"`
+}
+
+type ResponseMess struct {
+	Message string `json:"message"`
 }
 
 type ResponseIdAndMess struct {
@@ -36,6 +43,12 @@ type ResponseIdAndMess struct {
 	Message string `json:"message"`
 }
 
-type ResponseMess struct {
-	Message string `json:"message"`
+func (response *ResponseMess) sendResponse(c echo.Context, statusCode int) error {
+	fmt.Println(response.Message)
+	return c.JSON(statusCode, response)
+}
+
+func (response *ResponseIdAndMess) sendResponse(c echo.Context, statusCode int) error {
+	fmt.Println(response.Id, response.Message)
+	return c.JSON(statusCode, response)
 }
