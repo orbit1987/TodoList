@@ -14,7 +14,7 @@ const port = "port"
 
 func Run() {
 	if err := initConfig(); err != nil {
-		log.Fatalf("viper readInConfig err: %s", err.Error())
+		log.Fatalf("viper readInConfig error: %s", err.Error())
 	}
 
 	var port = viper.GetString(port)

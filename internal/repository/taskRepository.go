@@ -14,13 +14,30 @@ func NewTaskBase(base map[string]*domain.Task) *TaskRepository {
 	return &TaskRepository{base: base}
 }
 
-func (taskBase *TaskRepository) CreateTask(task *domain.Task) (id string, err error) {
-	taskBase.base[task.Id] = task
-	return task.Id, nil
+func (taskBase *TaskRepository) CreateTask(task *domain.Task) (string, error) {
+	taskBase.base[task.TaskId] = task
+	return task.TaskId, nil
 }
 
-func (taskBase *TaskRepository) UpdateTask(task *domain.Task) {
-	taskBase.base[task.Id] = task
+func (taskBase *TaskRepository) UpdateTask(taskId string, updateData map[string]interface{}) (string, error) {
+	task := taskBase.base[taskId]
+	if task == nil {
+		return "", taskIdNotFoundError(taskId)
+	}
+
+	if name, ok := updateData["name"].(string); ok {
+		task.Name = name
+	}
+
+	if description, ok := updateData["description"].(string); ok {
+		task.Description = description
+	}
+
+	if status, ok := updateData["status"].(float64); ok {
+		task.Status = int(status)
+	}
+
+	return task.TaskId, nil
 }
 
 func (taskBase *TaskRepository) DeleteTask(taskId string) error {
@@ -29,7 +46,7 @@ func (taskBase *TaskRepository) DeleteTask(taskId string) error {
 	lengthAfterDelete := len(taskBase.base)
 
 	if lengthBeforeDelete == lengthAfterDelete {
-		return errors.New(fmt.Sprintf("taskId %s not found", taskId))
+		return taskIdNotFoundError(taskId)
 	}
 
 	return nil
@@ -42,8 +59,12 @@ func (taskBase *TaskRepository) GetTaskList() map[string]*domain.Task {
 func (taskBase *TaskRepository) GetTaskById(taskId string) (*domain.Task, error) {
 	task := taskBase.base[taskId]
 	if task == nil {
-		return nil, errors.New(fmt.Sprintf("taskId %s not found", taskId))
+		return nil, taskIdNotFoundError(taskId)
 	}
 
 	return task, nil
+}
+
+func taskIdNotFoundError(taskId string) error {
+	return errors.New(fmt.Sprintf("taskId %s not found", taskId))
 }

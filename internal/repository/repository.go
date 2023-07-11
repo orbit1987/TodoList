@@ -3,11 +3,11 @@ package repository
 import "github.com/orbit1987/TodoList/internal/domain"
 
 type TodoTask interface {
-	CreateTask(task *domain.Task) (id string, err error)
-	UpdateTask(task *domain.Task)
+	CreateTask(task *domain.Task) (string, error)
+	UpdateTask(taskId string, updateData map[string]interface{}) (string, error)
 	DeleteTask(taskId string) error
 	GetTaskList() map[string]*domain.Task
-	GetTaskById(taskId string) (task *domain.Task, err error)
+	GetTaskById(taskId string) (*domain.Task, error)
 }
 
 type Repository struct {

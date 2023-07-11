@@ -15,9 +15,9 @@ func NewTaskService(repository *repository.Repository) *TaskService {
 	return &TaskService{repository: repository}
 }
 
-func (t *TaskService) CreateTask(name string, description string, status int) (id string, err error) {
+func (t *TaskService) CreateTask(name string, description string, status int) (string, error) {
 	newTask := new(domain.Task)
-	newTask.Id = uuid.New().String()
+	newTask.TaskId = uuid.New().String()
 	newTask.Name = name
 	newTask.Description = description
 	newTask.Status = status
@@ -26,25 +26,8 @@ func (t *TaskService) CreateTask(name string, description string, status int) (i
 	return t.repository.TodoTask.CreateTask(newTask)
 }
 
-func (t *TaskService) UpdateTask(taskId string, updateData map[string]interface{}) (id string, err error) {
-	task, error := t.repository.TodoTask.GetTaskById(taskId)
-	if error != nil {
-		return "", error
-	}
-
-	if name, ok := updateData["name"].(string); ok {
-		task.Name = name
-	}
-
-	if description, ok := updateData["description"].(string); ok {
-		task.Description = description
-	}
-
-	if status, ok := updateData["status"].(float64); ok {
-		task.Status = int(status)
-	}
-
-	return task.Id, nil
+func (t *TaskService) UpdateTask(taskId string, updateData map[string]interface{}) (string, error) {
+	return t.repository.TodoTask.UpdateTask(taskId, updateData)
 }
 
 func (t *TaskService) DeleteTask(taskId string) error {
@@ -55,6 +38,6 @@ func (t *TaskService) GetTaskList() map[string]*domain.Task {
 	return t.repository.TodoTask.GetTaskList()
 }
 
-func (t *TaskService) GetTaskById(taskId string) (task *domain.Task, err error) {
+func (t *TaskService) GetTaskById(taskId string) (*domain.Task, error) {
 	return t.repository.TodoTask.GetTaskById(taskId)
 }

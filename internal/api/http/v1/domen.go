@@ -11,19 +11,12 @@ type NewTask struct {
 	Status      int    `json:"status"`
 }
 
-type UpdateTask struct {
-	Id          string `json:"Id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Status      int    `json:"status"`
-}
-
 type TaskId struct {
-	Id string `json:"Id"`
+	Id string `json:"taskId"`
 }
 
 type ResponseFullTask struct {
-	Id          string `json:"Id"`
+	TaskId      string `json:"taskId"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Status      int    `json:"status"`
@@ -39,7 +32,7 @@ type ResponseMess struct {
 }
 
 type ResponseIdAndMess struct {
-	Id      string `json:"taskId"`
+	TaskId  string `json:"taskId"`
 	Message string `json:"message"`
 }
 
@@ -49,6 +42,6 @@ func (response *ResponseMess) sendResponse(c echo.Context, statusCode int) error
 }
 
 func (response *ResponseIdAndMess) sendResponse(c echo.Context, statusCode int) error {
-	fmt.Println(response.Id, response.Message)
+	fmt.Println(response.TaskId, response.Message)
 	return c.JSON(statusCode, response)
 }

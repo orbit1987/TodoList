@@ -6,8 +6,8 @@ import (
 )
 
 type TodoTask interface {
-	CreateTask(name string, description string, status int) (id string, err error)
-	UpdateTask(taskId string, updateData map[string]interface{}) (id string, err error)
+	CreateTask(name string, description string, status int) (string, error)
+	UpdateTask(taskId string, updateData map[string]interface{}) (string, error)
 	DeleteTask(taskId string) error
 	GetTaskList() map[string]*domain.Task
 	GetTaskById(taskId string) (task *domain.Task, err error)
