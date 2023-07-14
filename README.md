@@ -5,6 +5,13 @@ Getting Started
 - Port config (by default 8081)
 - TodoList/configs/config.yml 
 
+Users
+--------------- 
+- For do reqest you need add 2 headers in all requests except GET tasksList
+- Add Content-Type - application/json 
+- Add token - userToken
+- userToken can be any string
+
 API
 ---------------
 
