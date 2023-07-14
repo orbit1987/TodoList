@@ -103,6 +103,20 @@ func (handler *Handler) deleteTask(c echo.Context) error {
 	return taskResponse.sendResponse(c, http.StatusOK)
 }
 
+func (handler *Handler) deleteUserTaskList(c echo.Context) error {
+	userToken := c.Request().Header.Get(token)
+
+	taskResponse := ResponseMess{}
+	err := handler.services.TodoTask.DeleteUserTaskList(userToken)
+	if err != nil {
+		taskResponse.Message = err.Error()
+		return taskResponse.sendResponse(c, http.StatusNotFound)
+	}
+
+	taskResponse.Message = success
+	return taskResponse.sendResponse(c, http.StatusOK)
+}
+
 func (handler *Handler) getTaskItem(c echo.Context) error {
 	userToken := c.Request().Header.Get(token)
 	task, err := handler.services.TodoTask.GetTaskById(userToken, c.Param(taskId))
@@ -121,7 +135,7 @@ func (handler *Handler) getTaskItem(c echo.Context) error {
 	return c.JSON(http.StatusOK, fullTaskById)
 }
 
-func (handler *Handler) getUserTaskList(c echo.Context) error {
+func (handler *Handler) getUserTasksList(c echo.Context) error {
 	userToken := c.Request().Header.Get(token)
 
 	tasks := handler.services.TodoTask.GetUserTaskList(userToken)
@@ -137,20 +151,6 @@ func (handler *Handler) getUserTaskList(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, tasksResponse)
-}
-
-func (handler *Handler) deleteUserTaskList(c echo.Context) error {
-	userToken := c.Request().Header.Get(token)
-
-	taskResponse := ResponseMess{}
-	err := handler.services.TodoTask.DeleteUserTaskList(userToken)
-	if err != nil {
-		taskResponse.Message = err.Error()
-		return taskResponse.sendResponse(c, http.StatusNotFound)
-	}
-
-	taskResponse.Message = success
-	return taskResponse.sendResponse(c, http.StatusOK)
 }
 
 func (handler *Handler) taskList(c echo.Context) error {

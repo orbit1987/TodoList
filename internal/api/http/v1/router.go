@@ -26,7 +26,7 @@ func (handler *Handler) InitRouter() http.Handler {
 	api.DELETE(fmt.Sprintf("/deleteUserTaskList"), handler.deleteUserTaskList, checkUserToken)
 
 	api.GET(fmt.Sprintf("/getTaskItem/:%s", taskId), handler.getTaskItem, checkUserToken)
-	api.GET("/getUserTasksList", handler.getUserTaskList, checkUserToken)
+	api.GET("/getUserTasksList", handler.getUserTasksList, checkUserToken)
 	api.GET("/tasksList", handler.taskList)
 
 	return router
