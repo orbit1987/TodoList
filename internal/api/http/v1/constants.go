@@ -9,4 +9,6 @@ const (
 	description = "description"
 	status      = "status"
 	success     = "success"
+
+	token = "token"
 )

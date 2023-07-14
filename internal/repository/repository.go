@@ -3,11 +3,15 @@ package repository
 import "github.com/orbit1987/TodoList/internal/domain"
 
 type TodoTask interface {
-	CreateTask(task *domain.Task) (string, error)
-	UpdateTask(taskId string, updateData map[string]interface{}) (string, error)
-	DeleteTask(taskId string) error
-	GetTaskList() map[string]*domain.Task
-	GetTaskById(taskId string) (*domain.Task, error)
+	CreateTask(userToken string, task *domain.Task) (string, error)
+	UpdateTask(userToken string, taskId string, updateData map[string]interface{}) (string, error)
+
+	DeleteTask(userToken string, taskId string) error
+	DeleteUserTaskList(userToken string) error
+
+	GetTaskById(userToken string, taskId string) (*domain.Task, error)
+	GetUserTaskList(userToken string) map[string]*domain.Task
+	GetTaskList() map[string]map[string]*domain.Task
 }
 
 type Repository struct {
@@ -15,8 +19,8 @@ type Repository struct {
 }
 
 func NewRepository() *Repository {
-	base := make(map[string]*domain.Task)
+	dataBase := make(map[string]map[string]*domain.Task)
 	return &Repository{
-		TodoTask: NewTaskBase(base),
+		TodoTask: NewTaskBase(dataBase),
 	}
 }

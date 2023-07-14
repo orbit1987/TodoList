@@ -6,11 +6,15 @@ import (
 )
 
 type TodoTask interface {
-	CreateTask(name string, description string, status int) (string, error)
-	UpdateTask(taskId string, updateData map[string]interface{}) (string, error)
-	DeleteTask(taskId string) error
-	GetTaskList() map[string]*domain.Task
-	GetTaskById(taskId string) (task *domain.Task, err error)
+	CreateTask(user string, name string, description string, status int) (string, error)
+	UpdateTask(userToken string, taskId string, updateData map[string]interface{}) (string, error)
+
+	DeleteTask(userToken string, taskId string) error
+	DeleteUserTaskList(userToken string) error
+
+	GetTaskById(userToken string, taskId string) (*domain.Task, error)
+	GetUserTaskList(userToken string) map[string]*domain.Task
+	GetTaskList() map[string]map[string]*domain.Task
 }
 
 type Service struct {

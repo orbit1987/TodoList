@@ -20,10 +20,14 @@ type ResponseFullTask struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Status      int    `json:"status"`
-	TimeStump   int64  `json:"timeStump"`
+	TimeStump   int64  `json:"creationTime"`
 }
 
-type ResponseAllTasks struct {
+type ResponseAllData struct {
+	Users map[string]ResponseAllUserTasks `json:"users"`
+}
+
+type ResponseAllUserTasks struct {
 	AllTasks []ResponseFullTask `json:"tasks"`
 }
 
